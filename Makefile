@@ -244,11 +244,7 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else echo sh; fi ; fi)
 
 GRAPHITE_FLAGS = -fgraphite -fgraphite-identity -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
-KERNEL_FLAGS = -marm -mtune=cortex-a15 -mcpu=cortex-a15 -mfpu=neon-vfpv4 \
-		-mvectorize-with-neon-quad -fgcse-after-reload -fgcse-sm \
-		-fgcse-las -ftree-loop-im -ftree-loop-ivcanon -fweb \
-		-fmodulo-sched -ffast-math -funsafe-math-optimizations \
-		-std=gnu89 -DNDEBUG -pthread 
+KERNEL_FLAGS = -DNDEBUG -pthread 
 
 HOSTCC       = gcc
 HOSTCXX      = g++
