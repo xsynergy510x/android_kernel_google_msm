@@ -259,7 +259,7 @@ EXTRA_GCC_FLAGS := \
 	-ftree-loop-if-convert \
 	-ftree-loop-im \
 	-ftree-loop-ivcanon \
-	-ftree-parallelize-loops=n \
+	-ftree-parallelize-loops=4 \
 	-fvect-cost-model=dynamic \
 	-fprefetch-loop-arrays \
 	-ftree-vectorize \
