@@ -243,8 +243,32 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-GRAPHITE_FLAGS = -fgraphite -fgraphite-identity -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
-KERNEL_FLAGS = -DNDEBUG -pthread 
+GRAPHITE_FLAGS := \
+	-fgraphite \
+	-fgraphite-identity \
+	-floop-flatten \
+	-floop-parallelize-all \
+	-ftree-loop-linear \
+	-floop-interchange \
+	-floop-strip-mine \
+	-floop-block \
+	-floop-nest-optimize
+
+EXTRA_GCC_FLAGS := \
+	-ftree-loop-distribution \
+	-ftree-loop-if-convert \
+	-ftree-loop-im \
+	-ftree-loop-ivcanon \
+	-ftree-parallelize-loops=n \
+	-fvect-cost-model=dynamic \
+	-fprefetch-loop-arrays \
+	-ftree-vectorize \
+	-mvectorize-with-neon-quad
+
+KERNEL_FLAGS := \
+	-marm \
+	-DNDEBUG \
+	-std=gnu89
 
 HOSTCC       = gcc
 HOSTCXX      = g++
@@ -351,14 +375,18 @@ CHECK		= sparse
 # Use the wrapper for the compiler.  This wrapper scans for new
 # warnings and causes the build to stop upon encountering them.
 CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
-CC		+= -O3 -pthread $(GRAPHITE_FLAGS)
+CC		+= -O3 -pthread -fstack-protector \
+		$(kernel_arch_variant_cflags) \
+		$(GRAPHITE_FLAGS) \
+		$(EXTRA_GCC_FLAGS) \
+		$(KERNEL_FLAGS)
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 CFLAGS_MODULE   =
 AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
-CFLAGS_KERNEL	= $(KERNEL_FLAGS)
+LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
+CFLAGS_KERNEL	=
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
