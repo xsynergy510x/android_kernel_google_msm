@@ -15,3 +15,6 @@ obj-$(CONFIG_MSMB_CAMERA) += ispif/
 obj-$(CONFIG_MSMB_CAMERA) += msm_buf_mgr/
 obj-$(CONFIG_MSMB_CAMERA) += pproc/
 obj-$(CONFIG_MSMB_CAMERA) += gemini/
+
+# SaberMod Optimization fixes
+CFLAGS_msm.o		:= -Wno-bool-compare
