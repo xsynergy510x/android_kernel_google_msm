@@ -121,3 +121,7 @@ obj-$(CONFIG_IP_SET) += ipset/
 
 # IPVS
 obj-$(CONFIG_IP_VS) += ipvs/
+
+# SaberMod Graphite flag fixes
+CFLAGS_nf_conntrack_core.o 	:= -fno-loop-unroll-and-jam
+CFLAGS_xt_hashlimit.o 		:= -fno-loop-unroll-and-jam
