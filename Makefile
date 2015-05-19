@@ -252,7 +252,10 @@ GRAPHITE_FLAGS := \
 	-floop-interchange \
 	-floop-strip-mine \
 	-floop-block \
-	-floop-nest-optimize
+	-floop-nest-optimize \
+	-floop-unroll-and-jam \
+	-ftree-parallelize-loops=4 \
+    	-fopenmp
 
 EXTRA_GCC_FLAGS := \
 	-ftree-loop-distribution \
@@ -268,7 +271,10 @@ EXTRA_GCC_FLAGS := \
 KERNEL_FLAGS := \
 	-marm \
 	-DNDEBUG \
-	-std=gnu89
+	-std=gnu89 \
+	-mtune=cortex-a15 \
+	-mcpu=cortex-a15 \
+	-mfpu=neon-vfpv4
 
 HOSTCC       = gcc
 HOSTCXX      = g++
@@ -375,7 +381,8 @@ CHECK		= sparse
 # Use the wrapper for the compiler.  This wrapper scans for new
 # warnings and causes the build to stop upon encountering them.
 CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
-CC		+= -O3 -pthread -fstack-protector \
+
+CC		+= -O3 -fstack-protector \
 		$(kernel_arch_variant_cflags) \
 		$(GRAPHITE_FLAGS) \
 		$(EXTRA_GCC_FLAGS) \
