@@ -60,3 +60,5 @@ obj-$(CONFIG_MSM_VIDC_VENC) += vidc_venc.o
 
 vidc_venc-objs :=	common/enc/venc.o \
 			common/enc/venc_internal.o
+
+CFLAGS_vcd_res_tracker.o := -Wno-bool-compare
